@@ -28,7 +28,7 @@ final class TeaControllerTest extends FunctionalTestCase
                 'cacheHash' => [
                     'enforceValidation' => false,
                 ],
-            ]
+            ],
         ]);
 
         parent::setUp();
@@ -72,7 +72,7 @@ final class TeaControllerTest extends FunctionalTestCase
         $request = new InternalRequest();
         $request = $request->withPageId(3);
         $request = $request->withQueryParameters([
-            'tx_tea_teashow[tea]' => 1
+            'tx_tea_teashow[tea]' => 1,
         ]);
 
         $html = (string)$this->executeFrontendSubRequest($request)->getBody();
