@@ -101,4 +101,40 @@ final class TeaControllerTest extends FunctionalTestCase
         self::assertStringContainsString('Godesberger Burgtee', $html);
         self::assertStringNotContainsString('Oolong', $html);
     }
+
+    /**
+     * @test
+     */
+    public function showActionTriggers404ForMissingTeaArgument(): void
+    {
+        $request = (new InternalRequest())->withPageId(3);
+
+        $response = $this->executeFrontendSubRequest($request);
+
+        self::assertSame(404, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function showActionTriggers404ForUnavailableTea(): void
+    {
+        $request = (new InternalRequest())->withPageId(3)->withQueryParameters(['tx_tea_teashow[tea]' => 1]);
+
+        $response = $this->executeFrontendSubRequest($request);
+
+        self::assertSame(404, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function showActionFor404RendersReasonFor404(): void
+    {
+        $request = (new InternalRequest())->withPageId(3);
+
+        $html = (string)$this->executeFrontendSubRequest($request)->getBody();
+
+        self::assertStringContainsString('Reason: No tea given.', $html);
+    }
 }
